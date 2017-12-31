@@ -107,6 +107,7 @@ require(["gitbook"], function(gitbook) {
         editor.setTheme("ace/theme/tomorrow");
         editor.getSession().setUseWorker(false);
         editor.getSession().setMode("ace/mode/javascript");
+        editor.setOptions({ maxLines: 10 });
 
         editor.commands.addCommand({
             name: "submit",
