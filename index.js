@@ -32,7 +32,24 @@ module.exports = {
                 var codes = {};
 
                 _.each(blk.blocks, function(_blk) {
-                    codes[_blk.name] = _blk.body.trim();
+                    var src = _blk.kwargs.src;
+
+                    var selection = src
+                      ? /#L([0-9]+)(;)?\s*(L([0-9]+))?/.exec(src)
+                      : null;
+
+                    var body = src
+                        ? fs.readFileSync(src.split("#")[0]).toString()
+                        : _blk.body;
+
+                    if (selection) {
+                      const lines = body.split("\n");
+                      const start = selection[1] - 1;
+                      const end = selection[4] || (selection[2] ? lines.length : start + 1);
+                      body = lines.slice(start, end).join("\n");
+                    }
+
+                    codes[_blk.name] = body.trim();
                 });
 
                 // Select appropriate template
