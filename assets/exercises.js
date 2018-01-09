@@ -126,7 +126,10 @@ require(["gitbook"], function(gitbook) {
             execute("javascript", editor.getValue(), codeValidation, codeContext, function(err, result) {
                 $exercise.toggleClass("return-error", err != null);
                 $exercise.toggleClass("return-success", err == null);
-                if (err) $exercise.find(".alert-danger").text(err.message || err);
+                if (err) {
+                  var msg = (err.message || err).replace(/\n/g, '<br/>');
+                  $exercise.find(".alert-danger").html(msg);
+                }
             });
         });
 
